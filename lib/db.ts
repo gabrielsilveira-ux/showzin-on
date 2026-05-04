@@ -1,13 +1,23 @@
 import { createClient } from '@supabase/supabase-js'
 import { isToday, isWeekend, isSameMonth } from 'date-fns'
-import { Event, EventFilters, EventFormData, Category } from '@/types'
+import { Event, EventFilters, EventFormData, Category, Localizacao } from '@/types'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
 
-function normalizeEvent(row: any): Event {
+type EventRow = Partial<Event> & Partial<Localizacao> & {
+  localizacao?: Localizacao
+  estado?: string
+  cidade?: string
+  bairro?: string
+  endereco?: string
+  lat?: number
+  lng?: number
+}
+
+function normalizeEvent(row: EventRow): Event {
   return {
     ...row,
     localizacao: row.localizacao ?? {
@@ -83,7 +93,7 @@ export async function getEvents(filters?: Partial<EventFilters>): Promise<Event[
   const { data, error } = await query
   if (error) { console.error('getEvents error:', error); return [] }
 
-  let events = ((data as any[]) ?? []).map(normalizeEvent)
+  let events = ((data as EventRow[]) ?? []).map(normalizeEvent)
   if (filters?.period) events = filterEvents(events, { period: filters.period })
   return events
 }
@@ -95,7 +105,7 @@ export async function getAllEventsAdmin(): Promise<Event[]> {
     .order('created_at', { ascending: false })
 
   if (error) { console.error('getAllEventsAdmin error:', error); return [] }
-  return ((data as any[]) ?? []).map(normalizeEvent)
+  return ((data as EventRow[]) ?? []).map(normalizeEvent)
 }
 
 export async function getEventBySlug(slug: string): Promise<Event | null> {
@@ -120,17 +130,6 @@ export async function getEventById(id: string): Promise<Event | null> {
   return normalizeEvent(data)
 }
 
-export async function getEventById(id: string): Promise<Event | null> {
-  const { data, error } = await supabase
-    .from('events')
-    .select('*')
-    .eq('id', id)
-    .single()
-
-  if (error) return null
-  return data as Event
-}
-
 export async function getFeaturedEvents(): Promise<Event[]> {
   const { data, error } = await supabase
     .from('events')
@@ -140,7 +139,7 @@ export async function getFeaturedEvents(): Promise<Event[]> {
     .order('date_start', { ascending: true })
 
   if (error) { console.error('getFeaturedEvents error:', error); return [] }
-  return ((data as any[]) ?? []).map(normalizeEvent)
+  return ((data as EventRow[]) ?? []).map(normalizeEvent)
 }
 
 export async function createEvent(data: EventFormData): Promise<Event> {
