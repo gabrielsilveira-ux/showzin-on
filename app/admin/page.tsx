@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { CalendarDays, CheckCircle, Clock, Eye, PlusCircle } from 'lucide-react'
 
 export const metadata = { title: 'Dashboard | Admin' }
+export const dynamic = 'force-dynamic'
 
 export default async function AdminDashboard() {
   const events = await getAllEventsAdmin()

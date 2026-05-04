@@ -25,7 +25,8 @@ export async function POST(req: NextRequest) {
     const event = await createEvent(body)
     return NextResponse.json(event, { status: 201 })
   } catch (err) {
-    console.error(err)
-    return NextResponse.json({ error: 'Erro ao criar evento' }, { status: 500 })
+    const message = err instanceof Error ? err.message : 'Erro ao criar evento'
+    console.error('create event error:', message)
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
