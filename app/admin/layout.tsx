@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 import { LayoutDashboard, CalendarDays, PlusCircle, Settings, ExternalLink, LogOut } from 'lucide-react'
 
 const NAV = [
@@ -65,7 +66,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="text-sm font-medium truncate" style={{ color: '#fff' }}>Admin</div>
               <div className="text-xs" style={{ fontFamily: 'DM Mono,monospace', color: 'rgba(255,255,255,0.3)' }}>editor</div>
             </div>
-            <button className="transition-colors" style={{ color: 'rgba(255,255,255,0.3)' }}><LogOut size={15} /></button>
+            <button
+              onClick={() => signOut({ callbackUrl: '/admin/login' })}
+              title="Sair"
+              aria-label="Sair da conta"
+              className="transition-colors hover:text-white"
+              style={{ color: 'rgba(255,255,255,0.45)' }}>
+              <LogOut size={15} />
+            </button>
           </div>
         </div>
       </aside>
