@@ -1,11 +1,45 @@
 import { createClient } from '@supabase/supabase-js'
 import { isToday, isWeekend, isSameMonth } from 'date-fns'
-import { Event, EventFilters, EventFormData, Category } from '@/types'
+import { unstable_noStore as noStore } from 'next/cache'
+import { Event, EventFilters, EventFormData, Category, Localizacao } from '@/types'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  supabaseUrl,
+  typeof window === 'undefined' && supabaseServiceRoleKey ? supabaseServiceRoleKey : supabaseAnonKey
 )
+
+function assertServiceRoleForAdminWrite() {
+  if (typeof window === 'undefined' && !supabaseServiceRoleKey) {
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY não configurada no ambiente de servidor')
+  }
+}
+
+type EventRow = Partial<Event> & Partial<Localizacao> & {
+  estado?: string
+  cidade?: string
+  bairro?: string
+  endereco?: string
+  lat?: number
+  lng?: number
+}
+
+function normalizeEvent(row: EventRow): Event {
+  return {
+    ...row,
+    localizacao: {
+      estado: row.estado ?? '',
+      cidade: row.cidade ?? '',
+      bairro: row.bairro ?? undefined,
+      endereco: row.endereco ?? '',
+      lat: row.lat ?? undefined,
+      lng: row.lng ?? undefined,
+    },
+  } as Event
+}
 
 // ── CATEGORIA CONFIG ────────────────────────────────────────
 export const CATEGORY_CONFIG: Record<Category, { label: string; color: string; emoji: string }> = {
@@ -69,19 +103,21 @@ export async function getEvents(filters?: Partial<EventFilters>): Promise<Event[
   const { data, error } = await query
   if (error) { console.error('getEvents error:', error); return [] }
 
-  let events = (data as Event[]) ?? []
+  let events = ((data as EventRow[]) ?? []).map(normalizeEvent)
   if (filters?.period) events = filterEvents(events, { period: filters.period })
   return events
 }
 
 export async function getAllEventsAdmin(): Promise<Event[]> {
+  assertServiceRoleForAdminWrite()
+  noStore()
   const { data, error } = await supabase
     .from('events')
-    .select('*')
+    .select('id, slug, title, category, date_start, status, featured, source, cidade, estado, bairro, endereco, lat, lng, created_at')
     .order('created_at', { ascending: false })
 
   if (error) { console.error('getAllEventsAdmin error:', error); return [] }
-  return (data as Event[]) ?? []
+  return ((data as EventRow[]) ?? []).map(normalizeEvent)
 }
 
 export async function getEventBySlug(slug: string): Promise<Event | null> {
@@ -92,7 +128,18 @@ export async function getEventBySlug(slug: string): Promise<Event | null> {
     .single()
 
   if (error) return null
-  return data as Event
+  return normalizeEvent(data)
+}
+
+export async function getEventById(id: string): Promise<Event | null> {
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) return null
+  return normalizeEvent(data)
 }
 
 export async function getFeaturedEvents(): Promise<Event[]> {
@@ -104,10 +151,11 @@ export async function getFeaturedEvents(): Promise<Event[]> {
     .order('date_start', { ascending: true })
 
   if (error) { console.error('getFeaturedEvents error:', error); return [] }
-  return (data as Event[]) ?? []
+  return ((data as EventRow[]) ?? []).map(normalizeEvent)
 }
 
 export async function createEvent(data: EventFormData): Promise<Event> {
+  assertServiceRoleForAdminWrite()
   const slug = slugify(data.title) + '-' + Date.now()
   const cat  = CATEGORY_CONFIG[data.category as Category]
 
@@ -144,22 +192,38 @@ export async function createEvent(data: EventFormData): Promise<Event> {
     .single()
 
   if (error) throw new Error(error.message)
-  return created as Event
+  return normalizeEvent(created as EventRow)
 }
 
 export async function updateEvent(id: string, data: Partial<EventFormData>): Promise<Event> {
+  assertServiceRoleForAdminWrite()
+  const payload: Record<string, unknown> = {
+    ...data,
+    lat: data.lat !== undefined ? (data.lat ? parseFloat(data.lat) : null) : undefined,
+    lng: data.lng !== undefined ? (data.lng ? parseFloat(data.lng) : null) : undefined,
+    date_end: data.date_end || null,
+    time_end: data.time_end || null,
+    bairro: data.bairro || null,
+    ticket_url: data.ticket_url || null,
+    image_url: data.image_url || null,
+    updated_at: new Date().toISOString(),
+  }
+
+  Object.keys(payload).forEach((key) => payload[key] === undefined && delete payload[key])
+
   const { data: updated, error } = await supabase
     .from('events')
-    .update({ ...data, updated_at: new Date().toISOString() })
+    .update(payload)
     .eq('id', id)
     .select()
     .single()
 
   if (error) throw new Error(error.message)
-  return updated as Event
+  return normalizeEvent(updated as EventRow)
 }
 
 export async function deleteEvent(id: string): Promise<void> {
+  assertServiceRoleForAdminWrite()
   const { error } = await supabase
     .from('events')
     .delete()

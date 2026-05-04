@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { MOCK_EVENTS, CATEGORY_CONFIG } from '@/lib/db'
+import { getEventById } from '@/lib/db'
 import { EventFormData, Category } from '@/types'
 import EventForm from '@/components/admin/EventForm'
 
@@ -7,13 +7,13 @@ interface Props { params: Promise<{ id: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { id } = await params
-  const ev = MOCK_EVENTS.find(e => e.id === id)
+  const ev = await getEventById(id)
   return { title: ev ? `Editar: ${ev.title}` : 'Evento não encontrado' }
 }
 
 export default async function EditEventPage({ params }: Props) {
   const { id } = await params
-  const ev = MOCK_EVENTS.find(e => e.id === id)
+  const ev = await getEventById(id)
   if (!ev) notFound()
 
   const initial: Partial<EventFormData> = {
