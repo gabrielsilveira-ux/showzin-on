@@ -52,7 +52,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="pt-4 border-t mt-4" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
             <a href="/" target="_blank"
               className="flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm transition-all hover:bg-white/5"
-              style={{ color: 'rgba(255,255,255,0.58)' }}>
+              style={{ color: 'rgba(0, 0, 0, 0.58)' }}>
               <ExternalLink size={17} /> Ver portal
             </a>
           </div>
@@ -63,7 +63,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex items-center gap-3 rounded-xl border px-3 py-2.5" style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)' }}>
             <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold" style={{ background: 'rgba(232,67,10,0.25)', color: 'var(--accent)' }}>A</div>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium truncate" style={{ color: '#fff' }}>Admin</div>
+              <div className="text-sm font-medium truncate" style={{ color: '#000000' }}>Admin</div>
               <div className="text-xs" style={{ fontFamily: 'DM Mono,monospace', color: 'rgba(255,255,255,0.3)' }}>editor</div>
             </div>
             <button
