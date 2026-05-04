@@ -205,7 +205,19 @@ export async function createEvent(data: EventFormData): Promise<Event> {
 
 export async function updateEvent(id: string, data: Partial<EventFormData>): Promise<Event> {
   assertServiceRoleForAdminWrite()
-  const payload: Record<string, unknown> = { ...data, updated_at: new Date().toISOString() }
+  const payload: Record<string, unknown> = {
+    ...data,
+    lat: data.lat !== undefined ? (data.lat ? parseFloat(data.lat) : null) : undefined,
+    lng: data.lng !== undefined ? (data.lng ? parseFloat(data.lng) : null) : undefined,
+    date_end: data.date_end || null,
+    time_end: data.time_end || null,
+    bairro: data.bairro || null,
+    ticket_url: data.ticket_url || null,
+    image_url: data.image_url || null,
+    updated_at: new Date().toISOString(),
+  }
+
+  Object.keys(payload).forEach((key) => payload[key] === undefined && delete payload[key])
 
   const { data: updated, error } = await supabase
     .from('events')
