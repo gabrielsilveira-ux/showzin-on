@@ -35,7 +35,7 @@ export default function EventCard({ event, variant = 'vertical', style }: Props)
             <span className="text-xs font-medium uppercase tracking-wide" style={{ fontFamily: 'DM Mono,monospace', color: 'var(--accent)' }}>{formatEventDate(event.date_start)}</span>
             {event.time_start && <span className="text-xs" style={{ color: 'var(--ink-muted)' }}>· {event.time_start}</span>}
           </div>
-          <h3 className="font-bold leading-snug" style={{ fontFamily: "'Playfair Display',serif", fontSize: '1.1rem' }}>{event.title}</h3>
+          <h3 className="font-bold leading-snug" style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: '1.1rem' }}>{event.title}</h3>
           <p className="text-sm leading-relaxed line-clamp-2" style={{ color: 'var(--ink-soft)', fontWeight: 300 }}>{event.description}</p>
           <div className="flex items-center gap-1 text-xs mt-auto" style={{ color: 'var(--ink-muted)' }}>
             <MapPin size={12} />{event.localizacao.endereco}, {event.localizacao.cidade}
@@ -66,7 +66,7 @@ export default function EventCard({ event, variant = 'vertical', style }: Props)
           <span className="text-xs font-medium uppercase tracking-wide" style={{ fontFamily: 'DM Mono,monospace', color: 'var(--accent)' }}>{formatEventDate(event.date_start)}</span>
           {event.time_start && <span className="text-xs" style={{ color: 'var(--ink-muted)' }}>· {event.time_start}</span>}
         </div>
-        <h3 className="font-bold leading-snug line-clamp-2" style={{ fontFamily: "'Playfair Display',serif", fontSize: '1.05rem' }}>{event.title}</h3>
+        <h3 className="font-bold leading-snug line-clamp-2" style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: '1.05rem' }}>{event.title}</h3>
         <div className="flex items-center gap-1 text-xs" style={{ color: 'var(--ink-muted)' }}>
           <MapPin size={11} />{event.localizacao.endereco}
         </div>

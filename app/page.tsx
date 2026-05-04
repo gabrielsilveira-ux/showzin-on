@@ -32,7 +32,7 @@ export default async function HomePage({ searchParams }: Props) {
           <div className="rounded-3xl p-8 md:p-12 border" style={{ background: 'linear-gradient(120deg,#fff 0%,#f8f4ec 55%,#efe8da 100%)', borderColor: 'var(--border)' }}>
             <div className="max-w-2xl">
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs" style={{ background: '#fff', border: '1px solid var(--border)', fontFamily: 'DM Mono,monospace', color: 'var(--accent)' }}>● agenda gratuita atualizada</span>
-              <h1 className="mt-5 leading-tight" style={{ fontFamily: "'Playfair Display',serif", fontSize: 'clamp(2rem,4.2vw,3.8rem)', fontWeight: 800 }}>
+              <h1 className="mt-5 leading-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 'clamp(2rem,4.2vw,3.8rem)', fontWeight: 800 }}>
                 Descubra experiências gratuitas
                 <span style={{ color: 'var(--accent)' }}> perto de você</span>
               </h1>
@@ -54,7 +54,7 @@ export default async function HomePage({ searchParams }: Props) {
 
         <section className="max-w-7xl mx-auto px-4 sm:px-8 pb-14">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl" style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700 }}>Destaques</h2>
+            <h2 className="text-2xl" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700 }}>Destaques</h2>
             <span className="text-xs" style={{ fontFamily: 'DM Mono,monospace', color: 'var(--ink-muted)' }}>curadoria semanal</span>
           </div>
           <div className="grid md:grid-cols-3 gap-4">
@@ -63,7 +63,7 @@ export default async function HomePage({ searchParams }: Props) {
         </section>
 
         <section className="max-w-7xl mx-auto px-4 sm:px-8 pb-20">
-          <h2 className="text-2xl mb-4" style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700 }}>Todos os eventos</h2>
+          <h2 className="text-2xl mb-4" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700 }}>Todos os eventos</h2>
           {restEvents.length === 0 ? (
             <div className="rounded-2xl border p-10 text-center" style={{ background: '#fff', borderColor: 'var(--border)' }}>
               <div className="text-4xl mb-3">🔎</div>
@@ -78,7 +78,7 @@ export default async function HomePage({ searchParams }: Props) {
 
         <section className="py-12 px-4 sm:px-8" style={{ background: '#efe8da' }} id="cidades">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl mb-5" style={{ fontFamily: "'Playfair Display',serif", fontWeight: 700 }}>Explorar por cidade</h2>
+            <h2 className="text-2xl mb-5" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700 }}>Explorar por cidade</h2>
             <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))' }}>
               {CITIES.map(c => (
                 <Link key={c.value} href={`/?city=${c.value}`} className="bg-white rounded-xl p-4 text-center border transition-all hover:-translate-y-1 hover:shadow-md group" style={{ borderColor: 'var(--border)' }}>

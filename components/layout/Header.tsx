@@ -10,14 +10,14 @@ export default function Header() {
     { href: '/blog', label: 'Blog' },
   ]
   return (
-    <header className="sticky top-0 z-50 border-b" style={{ background: 'var(--cream)', borderColor: 'var(--border)' }}>
+    <header className="sticky top-0 z-50 border-b backdrop-blur" style={{ background: 'rgba(245,245,247,0.92)', borderColor: 'var(--border)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-6">
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <span style={{ fontFamily: "'Playfair Display',serif", fontWeight: 900, fontSize: '1.3rem' }}>
-            Eventos<span style={{ color: 'var(--accent)' }}>·</span>Livres
+          <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: '1.35rem', letterSpacing: '-0.02em' }}>
+            SHOW<span style={{ color: 'var(--accent)' }}>ZIN</span>
           </span>
           <span className="hidden sm:inline text-xs px-1.5 py-0.5 rounded" style={{ fontFamily: 'DM Mono,monospace', background: 'var(--surface-2)', color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>
-            BETA
+            AO VIVO
           </span>
         </Link>
 
@@ -32,7 +32,7 @@ export default function Header() {
 
         <Link href="/#newsletter"
           className="text-sm font-medium px-4 py-2 rounded transition-colors"
-          style={{ background: 'var(--ink)', color: '#fff' }}
+          style={{ background: 'var(--accent)', color: '#fff' }}
         >
           Receber dicas →
         </Link>
