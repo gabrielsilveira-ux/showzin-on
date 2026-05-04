@@ -8,7 +8,6 @@ const supabase = createClient(
 )
 
 type EventRow = Partial<Event> & Partial<Localizacao> & {
-  localizacao?: Localizacao
   estado?: string
   cidade?: string
   bairro?: string
@@ -20,7 +19,7 @@ type EventRow = Partial<Event> & Partial<Localizacao> & {
 function normalizeEvent(row: EventRow): Event {
   return {
     ...row,
-    localizacao: row.localizacao ?? {
+    localizacao: {
       estado: row.estado ?? '',
       cidade: row.cidade ?? '',
       bairro: row.bairro ?? undefined,
@@ -101,7 +100,7 @@ export async function getEvents(filters?: Partial<EventFilters>): Promise<Event[
 export async function getAllEventsAdmin(): Promise<Event[]> {
   const { data, error } = await supabase
     .from('events')
-    .select('id, slug, title, category, date_start, status, featured, source, localizacao, cidade, estado, bairro, endereco, lat, lng, created_at')
+    .select('id, slug, title, category, date_start, status, featured, source, cidade, estado, bairro, endereco, lat, lng, created_at')
     .order('created_at', { ascending: false })
 
   if (error) { console.error('getAllEventsAdmin error:', error); return [] }
@@ -192,17 +191,6 @@ export async function createEvent(data: EventFormData): Promise<Event> {
 
 export async function updateEvent(id: string, data: Partial<EventFormData>): Promise<Event> {
   const payload: Record<string, unknown> = { ...data, updated_at: new Date().toISOString() }
-
-  if ('estado' in data || 'cidade' in data || 'bairro' in data || 'endereco' in data || 'lat' in data || 'lng' in data) {
-    payload.localizacao = {
-      estado: data.estado,
-      cidade: data.cidade,
-      bairro: data.bairro || null,
-      endereco: data.endereco,
-      lat: data.lat ? parseFloat(data.lat) : null,
-      lng: data.lng ? parseFloat(data.lng) : null,
-    }
-  }
 
   const { data: updated, error } = await supabase
     .from('events')
