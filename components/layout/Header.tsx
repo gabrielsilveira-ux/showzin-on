@@ -1,41 +1,29 @@
 'use client'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { Search, User, Ticket, ShoppingCart } from 'lucide-react'
 
 export default function Header() {
-  const path = usePathname()
-  const links = [
-    { href: '/#eventos', label: 'Eventos' },
-    { href: '/#cidades', label: 'Cidades' },
-    { href: '/blog', label: 'Blog' },
-  ]
   return (
-    <header className="sticky top-0 z-50 border-b" style={{ background: 'var(--cream)', borderColor: 'var(--border)' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-6">
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <span style={{ fontFamily: "'Playfair Display',serif", fontWeight: 900, fontSize: '1.3rem' }}>
-            Eventos<span style={{ color: 'var(--accent)' }}>·</span>Livres
-          </span>
-          <span className="hidden sm:inline text-xs px-1.5 py-0.5 rounded" style={{ fontFamily: 'DM Mono,monospace', background: 'var(--surface-2)', color: 'var(--ink-muted)', letterSpacing: '0.08em' }}>
-            BETA
-          </span>
+    <header className="sticky top-0 z-50 border-b" style={{ background: '#f2f4f7', borderColor: '#d8dde5' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center gap-4">
+        <Link href="/" className="shrink-0" style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: '2rem', fontWeight: 700, color: '#1a2232' }}>
+          ic<span style={{ color: '#e53935' }}>•</span>nes
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1">
-          {links.map(l => (
-            <Link key={l.href} href={l.href}
-              className="px-3 py-1.5 rounded text-sm font-medium transition-colors"
-              style={{ color: path === l.href ? 'var(--accent)' : 'var(--ink-soft)' }}
-            >{l.label}</Link>
-          ))}
-        </nav>
+        <div className="flex-1 flex items-center gap-2 rounded-md px-3 h-10" style={{ background: '#e9edf2', border: '1px solid #d5dbe5' }}>
+          <Search size={16} color="#6a7385" />
+          <input placeholder="Buscar eventos, artistas, etc..." className="bg-transparent outline-none text-sm w-full" />
+        </div>
 
-        <Link href="/#newsletter"
-          className="text-sm font-medium px-4 py-2 rounded transition-colors"
-          style={{ background: 'var(--ink)', color: '#fff' }}
-        >
-          Receber dicas →
-        </Link>
+        <button className="h-10 px-4 rounded-md text-sm font-semibold text-white inline-flex items-center gap-2" style={{ background: '#e54b4b' }}>
+          <Ticket size={14} /> Meus ingressos
+        </button>
+        <button className="h-10 px-4 rounded-md text-sm font-semibold text-white inline-flex items-center gap-2" style={{ background: '#2e77d0' }}>
+          <User size={14} /> Entrar | Cadastrar
+        </button>
+        <button className="h-10 w-10 rounded-md inline-flex items-center justify-center" style={{ background: '#e9edf2', border: '1px solid #d5dbe5' }}>
+          <ShoppingCart size={15} color="#5f6878" />
+        </button>
       </div>
     </header>
   )
