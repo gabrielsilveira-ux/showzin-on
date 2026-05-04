@@ -183,6 +183,14 @@ export async function createEvent(data: EventFormData): Promise<Event> {
     featured:    data.featured,
     status:      data.status,
     source:      'editorial',
+    localizacao: {
+      estado: data.estado,
+      cidade: data.cidade,
+      bairro: data.bairro || null,
+      endereco: data.endereco,
+      lat: data.lat ? parseFloat(data.lat) : null,
+      lng: data.lng ? parseFloat(data.lng) : null,
+    },
   }
 
   const { data: created, error } = await supabase
