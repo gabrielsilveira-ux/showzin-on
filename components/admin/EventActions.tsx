@@ -56,16 +56,14 @@ export default function EventActions({ eventId, currentStatus }: Props) {
         type="button"
         onClick={togglePause}
         disabled={!!loading}
-        className="text-xs px-3 py-1.5 rounded border transition-all hover:border-stone-400"
-        style={{ border: '1px solid var(--border)', color: 'var(--ink-muted)', fontFamily: 'DM Mono,monospace' }}>
+        className="text-xs px-3 py-1.5 rounded-lg border border-border/50 text-muted transition-all hover:border-primary hover:text-primary disabled:opacity-50 font-mono">
         {loading === 'pause' || loading === 'publish' ? 'salvando...' : currentStatus === 'published' ? 'pausar' : 'publicar'}
       </button>
       <button
         type="button"
         onClick={removeEvent}
         disabled={!!loading}
-        className="text-xs px-3 py-1.5 rounded border transition-all hover:border-red-400"
-        style={{ border: '1px solid #fca5a5', color: '#b91c1c', fontFamily: 'DM Mono,monospace' }}>
+        className="text-xs px-3 py-1.5 rounded-lg border border-red-500/30 text-red-500/80 transition-all hover:border-red-500 hover:text-red-500 disabled:opacity-50 font-mono">
         {loading === 'delete' ? 'excluindo...' : 'excluir'}
       </button>
     </div>
