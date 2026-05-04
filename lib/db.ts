@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { isToday, isWeekend, isSameMonth } from 'date-fns'
+import { unstable_noStore as noStore } from 'next/cache'
 import { Event, EventFilters, EventFormData, Category, Localizacao } from '@/types'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -108,6 +109,8 @@ export async function getEvents(filters?: Partial<EventFilters>): Promise<Event[
 }
 
 export async function getAllEventsAdmin(): Promise<Event[]> {
+  assertServiceRoleForAdminWrite()
+  noStore()
   const { data, error } = await supabase
     .from('events')
     .select('id, slug, title, category, date_start, status, featured, source, cidade, estado, bairro, endereco, lat, lng, created_at')
