@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { updateEvent, deleteEvent, getEventBySlug, MOCK_EVENTS } from '@/lib/db'
+import { updateEvent, deleteEvent, getEventById } from '@/lib/db'
 import { EventFormData } from '@/types'
 
 interface Ctx { params: Promise<{ id: string }> }
@@ -12,7 +12,8 @@ export async function PATCH(req: NextRequest, { params }: Ctx) {
     const event = await updateEvent(id, body)
     return NextResponse.json(event)
   } catch (err) {
-    return NextResponse.json({ error: 'Erro ao atualizar evento' }, { status: 500 })
+    const message = err instanceof Error ? err.message : 'Erro ao atualizar evento'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
 
@@ -23,7 +24,8 @@ export async function DELETE(_: NextRequest, { params }: Ctx) {
     await deleteEvent(id)
     return NextResponse.json({ ok: true })
   } catch (err) {
-    return NextResponse.json({ error: 'Erro ao deletar evento' }, { status: 500 })
+    const message = err instanceof Error ? err.message : 'Erro ao deletar evento'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
 
@@ -31,7 +33,7 @@ export async function DELETE(_: NextRequest, { params }: Ctx) {
 export async function GET(_: NextRequest, { params }: Ctx) {
   try {
     const { id } = await params
-    const event = MOCK_EVENTS.find(e => e.id === id)
+    const event = await getEventById(id)
     if (!event) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
     return NextResponse.json(event)
   } catch (err) {
