@@ -1,9 +1,27 @@
 'use client'
 import { useState, KeyboardEvent } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { EventFormData, EventStatus, Category } from '@/types'
 import { CATEGORY_CONFIG, CITIES } from '@/lib/db'
-import { X, Plus } from 'lucide-react'
+import { X } from 'lucide-react'
+
+function Field({ label, required, error, hint, children }: { label: string; required?: boolean; error?: string; hint?: string; children: ReactNode }) {
+  return (
+    <div className="mb-5">
+      <label className="block text-xs uppercase tracking-widest mb-1.5" style={{ fontFamily: 'DM Mono,monospace', color: 'var(--ink-muted)' }}>
+        {label}{required && <span style={{ color: 'var(--accent)' }}> *</span>}
+      </label>
+      {children}
+      {error && <div className="text-xs mt-1" style={{ color: '#e24b4a' }}>{error}</div>}
+      {hint && !error && <div className="text-xs mt-1" style={{ color: 'var(--ink-muted)' }}>{hint}</div>}
+    </div>
+  )
+}
+
+function SectionLabel({ children }: { children: ReactNode }) {
+  return <div className="text-xs uppercase tracking-widest pt-5 pb-2 mb-2 border-t" style={{ fontFamily: 'DM Mono,monospace', color: 'var(--ink-muted)', borderColor: 'var(--border)' }}>{children}</div>
+}
 
 interface Props {
   initial?: Partial<EventFormData>
@@ -71,23 +89,8 @@ export default function EventForm({ initial = {}, eventId, mode }: Props) {
     }
   }
 
-  const Field = ({ label, required, error, hint, children }: { label: string; required?: boolean; error?: string; hint?: string; children: React.ReactNode }) => (
-    <div className="mb-5">
-      <label className="block text-xs uppercase tracking-widest mb-1.5" style={{ fontFamily: 'DM Mono,monospace', color: 'var(--ink-muted)' }}>
-        {label}{required && <span style={{ color: 'var(--accent)' }}> *</span>}
-      </label>
-      {children}
-      {error && <div className="text-xs mt-1" style={{ color: '#e24b4a' }}>{error}</div>}
-      {hint && !error && <div className="text-xs mt-1" style={{ color: 'var(--ink-muted)' }}>{hint}</div>}
-    </div>
-  )
-
   const inputCls = (err?: string) => `w-full px-4 py-2.5 rounded-lg border text-sm outline-none transition-all ${err ? 'border-red-400' : ''}`
-  const inputStyle = (err?: string): React.CSSProperties => ({ background: '#fff', borderColor: err ? '#e24b4a' : 'var(--border)', fontFamily: 'DM Sans,sans-serif', boxShadow: err ? '0 0 0 2px rgba(226,75,74,0.1)' : '' })
-
-  const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-    <div className="text-xs uppercase tracking-widest pt-5 pb-2 mb-2 border-t" style={{ fontFamily: 'DM Mono,monospace', color: 'var(--ink-muted)', borderColor: 'var(--border)' }}>{children}</div>
-  )
+  const inputStyle = (err?: string): CSSProperties => ({ background: '#fff', borderColor: err ? '#e24b4a' : 'var(--border)', fontFamily: 'DM Sans,sans-serif', boxShadow: err ? '0 0 0 2px rgba(226,75,74,0.1)' : '' })
 
   const catPreview = form.category ? CATEGORY_CONFIG[form.category as Category] : null
 
