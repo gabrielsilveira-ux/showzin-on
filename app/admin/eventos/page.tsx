@@ -1,6 +1,7 @@
 import { getAllEventsAdmin } from '@/lib/db'
 import Link from 'next/link'
 import { PlusCircle } from 'lucide-react'
+import EventActions from '@/components/admin/EventActions'
 
 export const metadata = { title: 'Eventos | Admin' }
 export const dynamic = 'force-dynamic'
@@ -68,7 +69,7 @@ export default async function AdminEventsList() {
                         {ev.featured ? '✦' : <span style={{ color: 'var(--ink-muted)' }}>—</span>}
                       </td>
                       <td className="px-5 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <Link href={`/admin/eventos/${ev.id}`}
                             className="text-xs px-3 py-1.5 rounded border transition-all hover:border-stone-400"
                             style={{ border: '1px solid var(--border)', color: 'var(--ink-muted)', fontFamily: 'DM Mono,monospace' }}>
@@ -79,6 +80,7 @@ export default async function AdminEventsList() {
                             style={{ border: '1px solid var(--border)', color: 'var(--ink-muted)', fontFamily: 'DM Mono,monospace' }}>
                             ver
                           </Link>
+                          <EventActions eventId={ev.id} currentStatus={ev.status} />
                         </div>
                       </td>
                     </tr>
