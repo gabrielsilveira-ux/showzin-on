@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { updateEvent, deleteEvent, getEventBySlug, MOCK_EVENTS } from '@/lib/db'
+import { updateEvent, deleteEvent, getEventById } from '@/lib/db'
 import { EventFormData } from '@/types'
 
 interface Ctx { params: Promise<{ id: string }> }
@@ -31,7 +31,7 @@ export async function DELETE(_: NextRequest, { params }: Ctx) {
 export async function GET(_: NextRequest, { params }: Ctx) {
   try {
     const { id } = await params
-    const event = MOCK_EVENTS.find(e => e.id === id)
+    const event = await getEventById(id)
     if (!event) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
     return NextResponse.json(event)
   } catch (err) {
