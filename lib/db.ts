@@ -2,10 +2,20 @@ import { createClient } from '@supabase/supabase-js'
 import { isToday, isWeekend, isSameMonth } from 'date-fns'
 import { Event, EventFilters, EventFormData, Category, Localizacao } from '@/types'
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  supabaseUrl,
+  typeof window === 'undefined' && supabaseServiceRoleKey ? supabaseServiceRoleKey : supabaseAnonKey
 )
+
+function assertServiceRoleForAdminWrite() {
+  if (typeof window === 'undefined' && !supabaseServiceRoleKey) {
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY não configurada no ambiente de servidor')
+  }
+}
 
 type EventRow = Partial<Event> & Partial<Localizacao> & {
   estado?: string
@@ -142,6 +152,7 @@ export async function getFeaturedEvents(): Promise<Event[]> {
 }
 
 export async function createEvent(data: EventFormData): Promise<Event> {
+  assertServiceRoleForAdminWrite()
   const slug = slugify(data.title) + '-' + Date.now()
   const cat  = CATEGORY_CONFIG[data.category as Category]
 
@@ -190,6 +201,7 @@ export async function createEvent(data: EventFormData): Promise<Event> {
 }
 
 export async function updateEvent(id: string, data: Partial<EventFormData>): Promise<Event> {
+  assertServiceRoleForAdminWrite()
   const payload: Record<string, unknown> = { ...data, updated_at: new Date().toISOString() }
 
   const { data: updated, error } = await supabase
@@ -204,6 +216,7 @@ export async function updateEvent(id: string, data: Partial<EventFormData>): Pro
 }
 
 export async function deleteEvent(id: string): Promise<void> {
+  assertServiceRoleForAdminWrite()
   const { error } = await supabase
     .from('events')
     .delete()
