@@ -1,10 +1,8 @@
 'use client'
 import { signIn } from 'next-auth/react'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
-  const router = useRouter()
   const [error, setError]     = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -15,11 +13,10 @@ export default function LoginPage() {
     const res  = await signIn('credentials', {
       username: (form.elements.namedItem('username') as HTMLInputElement).value,
       password: (form.elements.namedItem('password') as HTMLInputElement).value,
-      redirect: false,
+      redirect: true,
+      callbackUrl: '/admin',
     })
-    if (res?.ok) {
-      router.push('/admin')
-    } else {
+    if (res?.error) {
       setError('Usuário ou senha incorretos')
       setLoading(false)
     }
