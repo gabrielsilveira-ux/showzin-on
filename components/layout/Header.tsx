@@ -1,28 +1,28 @@
 'use client'
 import Link from 'next/link'
-import { Search, User, Ticket, ShoppingCart } from 'lucide-react'
+import { Search, User, Ticket, Menu } from 'lucide-react'
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b" style={{ background: '#f2f4f7', borderColor: '#d8dde5' }}>
+    <header className="sticky top-0 z-50 border-b border-slate-200/90 bg-white/90 backdrop-blur">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center gap-4">
-        <Link href="/" className="shrink-0" style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: '2rem', fontWeight: 700, color: '#1a2232' }}>
-          ic<span style={{ color: '#e53935' }}>•</span>nes
+        <Link href="/" className="shrink-0 text-2xl font-extrabold tracking-tight text-slate-900">
+          SHOW<span className="text-violet-600">ZIN</span>
         </Link>
 
-        <div className="flex-1 flex items-center gap-2 rounded-md px-3 h-10" style={{ background: '#e9edf2', border: '1px solid #d5dbe5' }}>
-          <Search size={16} color="#6a7385" />
-          <input placeholder="Buscar eventos, artistas, etc..." className="bg-transparent outline-none text-sm w-full" />
+        <div className="hidden md:flex flex-1 items-center gap-2 rounded-xl px-3 h-10 bg-slate-100 border border-slate-200">
+          <Search size={16} color="#667085" />
+          <input placeholder="Buscar eventos, artistas, locais..." className="bg-transparent outline-none text-sm w-full text-slate-700" />
         </div>
 
-        <button className="h-10 px-4 rounded-md text-sm font-semibold text-white inline-flex items-center gap-2" style={{ background: '#e54b4b' }}>
-          <Ticket size={14} /> Meus ingressos
+        <button className="hidden sm:inline-flex h-10 px-4 rounded-xl text-sm font-semibold text-slate-700 bg-slate-100 border border-slate-200 items-center gap-2">
+          <Ticket size={14} /> Ingressos
         </button>
-        <button className="h-10 px-4 rounded-md text-sm font-semibold text-white inline-flex items-center gap-2" style={{ background: '#2e77d0' }}>
-          <User size={14} /> Entrar | Cadastrar
+        <button className="h-10 px-4 rounded-xl text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 inline-flex items-center gap-2 transition-colors">
+          <User size={14} /> Entrar
         </button>
-        <button className="h-10 w-10 rounded-md inline-flex items-center justify-center" style={{ background: '#e9edf2', border: '1px solid #d5dbe5' }}>
-          <ShoppingCart size={15} color="#5f6878" />
+        <button className="md:hidden h-10 w-10 rounded-xl inline-flex items-center justify-center bg-slate-100 border border-slate-200">
+          <Menu size={16} color="#475467" />
         </button>
       </div>
     </header>

@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { CalendarDays, MapPin, Sparkles } from 'lucide-react'
 import { getEvents, getFeaturedEvents } from '@/lib/db'
 import { EventFilters, Category } from '@/types'
 import Header from '@/components/layout/Header'
@@ -23,32 +24,41 @@ export default async function HomePage({ searchParams }: Props) {
   return (
     <>
       <Header />
-      <main style={{ background: '#e7ebf0' }}>
-        <section className="max-w-7xl mx-auto px-4 sm:px-8 py-8">
-          <div className="rounded-lg overflow-hidden" style={{ background: '#111', minHeight: 330 }}>
-            {featuredEvent && (
-              <div className="p-8 md:p-10 grid md:grid-cols-3 gap-5 items-end" style={{ minHeight: 330, background: `radial-gradient(circle at 20% 0%, ${featuredEvent.color}66 0%, #0f1115 45%)` }}>
-                <div>
-                  <div className="text-5xl font-bold text-white">{new Date(featuredEvent.date_start).getDate()}</div>
-                  <div className="text-2xl font-bold text-white/90 uppercase">{new Date(featuredEvent.date_start).toLocaleDateString('pt-BR', { month: 'short' })}</div>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-widest text-yellow-300">Destaque</p>
-                  <h1 className="text-3xl md:text-4xl mt-2 text-white" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700 }}>{featuredEvent.title}</h1>
-                  <p className="mt-2 text-white/75 text-sm">{featuredEvent.localizacao.endereco}, {featuredEvent.localizacao.cidade}</p>
-                </div>
-                <div className="md:text-right">
-                  <div className="inline-flex px-3 py-1 rounded text-xs font-semibold uppercase" style={{ background: '#ff4d4f', color: 'white' }}>Evento gratuito</div>
-                </div>
+      <main className="bg-slate-50">
+        <section className="max-w-7xl mx-auto px-4 sm:px-8 pt-10 pb-8">
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 md:p-10 shadow-sm">
+            <div className="grid lg:grid-cols-2 gap-10 items-center">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-700">
+                  <Sparkles size={14} /> Portal Showzin
+                </span>
+                <h1 className="mt-4 text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+                  Eventos gratuitos com um visual mais clean, moderno e direto.
+                </h1>
+                <p className="mt-4 text-slate-600 max-w-xl">
+                  O SHOWZIN conecta pessoas aos melhores eventos da região com uma navegação simples,
+                  destaque para atrações e filtros rápidos.
+                </p>
               </div>
-            )}
+
+              {featuredEvent && (
+                <div className="rounded-2xl bg-slate-900 p-6 text-white">
+                  <p className="text-xs uppercase tracking-widest text-violet-300">Evento em destaque</p>
+                  <h2 className="mt-2 text-2xl font-bold">{featuredEvent.title}</h2>
+                  <div className="mt-4 space-y-2 text-sm text-slate-300">
+                    <p className="flex items-center gap-2"><CalendarDays size={16} /> {new Date(featuredEvent.date_start).toLocaleDateString('pt-BR', { dateStyle: 'full' })}</p>
+                    <p className="flex items-center gap-2"><MapPin size={16} /> {featuredEvent.localizacao.endereco}, {featuredEvent.localizacao.cidade}</p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </section>
 
         <section className="max-w-7xl mx-auto px-4 sm:px-8 pb-20">
-          <h2 className="text-4xl mb-1" style={{ color: '#1e2a3c', fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700 }}>Eventos em andamento</h2>
-          <p className="mb-4 text-sm" style={{ color: '#687385' }}>Confira os melhores eventos disponíveis</p>
-          <div className="mb-4"><Suspense><FilterBar count={events.length} /></Suspense></div>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Agenda de eventos</h2>
+          <p className="mt-1 mb-4 text-sm text-slate-600">Descubra eventos por cidade, estilo e período.</p>
+          <div className="mb-5"><Suspense><FilterBar count={events.length} /></Suspense></div>
 
           <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))' }}>
             {events.map((ev, i) => <EventCard key={ev.id} event={ev} style={{ animationDelay: `${i * 0.03}s` }} />)}
