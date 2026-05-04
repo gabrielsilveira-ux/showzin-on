@@ -170,6 +170,14 @@ export async function createEvent(data: EventFormData): Promise<Event> {
     featured:    data.featured,
     status:      data.status,
     source:      'editorial',
+    localizacao: {
+      estado: data.estado,
+      cidade: data.cidade,
+      bairro: data.bairro || null,
+      endereco: data.endereco,
+      lat: data.lat ? parseFloat(data.lat) : null,
+      lng: data.lng ? parseFloat(data.lng) : null,
+    },
   }
 
   const { data: created, error } = await supabase
@@ -179,19 +187,32 @@ export async function createEvent(data: EventFormData): Promise<Event> {
     .single()
 
   if (error) throw new Error(error.message)
-  return created as Event
+  return normalizeEvent(created as EventRow)
 }
 
 export async function updateEvent(id: string, data: Partial<EventFormData>): Promise<Event> {
+  const payload: Record<string, unknown> = { ...data, updated_at: new Date().toISOString() }
+
+  if ('estado' in data || 'cidade' in data || 'bairro' in data || 'endereco' in data || 'lat' in data || 'lng' in data) {
+    payload.localizacao = {
+      estado: data.estado,
+      cidade: data.cidade,
+      bairro: data.bairro || null,
+      endereco: data.endereco,
+      lat: data.lat ? parseFloat(data.lat) : null,
+      lng: data.lng ? parseFloat(data.lng) : null,
+    }
+  }
+
   const { data: updated, error } = await supabase
     .from('events')
-    .update({ ...data, updated_at: new Date().toISOString() })
+    .update(payload)
     .eq('id', id)
     .select()
     .single()
 
   if (error) throw new Error(error.message)
-  return updated as Event
+  return normalizeEvent(updated as EventRow)
 }
 
 export async function deleteEvent(id: string): Promise<void> {

@@ -79,11 +79,15 @@ export default function EventForm({ initial = {}, eventId, mode }: Props) {
       const url = mode === 'edit' ? `/api/admin/events/${eventId}` : '/api/admin/events'
       const method = mode === 'edit' ? 'PATCH' : 'POST'
       const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-      if (!res.ok) throw new Error('Erro ao salvar')
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw new Error(body?.error || 'Erro ao salvar')
+      }
       setSaved(true)
       setTimeout(() => { router.push('/admin/eventos'); router.refresh() }, 900)
-    } catch {
-      alert('Erro ao salvar o evento. Tente novamente.')
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Erro ao salvar o evento. Tente novamente.'
+      alert(message)
     } finally {
       setSaving(false)
     }
