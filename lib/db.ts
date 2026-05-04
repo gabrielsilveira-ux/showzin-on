@@ -95,6 +95,17 @@ export async function getEventBySlug(slug: string): Promise<Event | null> {
   return data as Event
 }
 
+export async function getEventById(id: string): Promise<Event | null> {
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) return null
+  return data as Event
+}
+
 export async function getFeaturedEvents(): Promise<Event[]> {
   const { data, error } = await supabase
     .from('events')
