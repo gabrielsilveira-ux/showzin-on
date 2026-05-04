@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { PlusCircle } from 'lucide-react'
 
 export const metadata = { title: 'Eventos | Admin' }
+export const dynamic = 'force-dynamic'
 
 export default async function AdminEventsList() {
   const events = await getAllEventsAdmin()
