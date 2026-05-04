@@ -1,29 +1,43 @@
 'use client'
 import Link from 'next/link'
-import { Search, User, Ticket, ShoppingCart } from 'lucide-react'
+import { Search, User, Ticket, ShoppingCart, Menu } from 'lucide-react'
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b" style={{ background: '#f2f4f7', borderColor: '#d8dde5' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center gap-4">
-        <Link href="/" className="shrink-0" style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: '2rem', fontWeight: 700, color: '#1a2232' }}>
-          ic<span style={{ color: '#e53935' }}>•</span>nes
+    <header className="sticky top-0 z-50 glass border-b border-border/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
+        <Link href="/" className="shrink-0 font-display text-2xl font-bold tracking-tight text-primary">
+          show<span className="text-accent">zin</span>
         </Link>
 
-        <div className="flex-1 flex items-center gap-2 rounded-md px-3 h-10" style={{ background: '#e9edf2', border: '1px solid #d5dbe5' }}>
-          <Search size={16} color="#6a7385" />
-          <input placeholder="Buscar eventos, artistas, etc..." className="bg-transparent outline-none text-sm w-full" />
+        {/* Desktop Search */}
+        <div className="hidden md:flex flex-1 max-w-md items-center gap-2 rounded-full px-4 h-10 bg-surface/50 border border-border focus-within:border-accent/50 transition-colors">
+          <Search size={16} className="text-muted" />
+          <input placeholder="Buscar eventos, artistas, etc..." className="bg-transparent outline-none text-sm w-full placeholder:text-muted/70" />
         </div>
 
-        <button className="h-10 px-4 rounded-md text-sm font-semibold text-white inline-flex items-center gap-2" style={{ background: '#e54b4b' }}>
-          <Ticket size={14} /> Meus ingressos
-        </button>
-        <button className="h-10 px-4 rounded-md text-sm font-semibold text-white inline-flex items-center gap-2" style={{ background: '#2e77d0' }}>
-          <User size={14} /> Entrar | Cadastrar
-        </button>
-        <button className="h-10 w-10 rounded-md inline-flex items-center justify-center" style={{ background: '#e9edf2', border: '1px solid #d5dbe5' }}>
-          <ShoppingCart size={15} color="#5f6878" />
-        </button>
+        {/* Desktop Actions */}
+        <div className="hidden md:flex items-center gap-3">
+          <button className="h-10 px-4 rounded-full text-sm font-medium text-primary inline-flex items-center gap-2 bg-surface hover:bg-surface/80 border border-border transition-colors">
+            <Ticket size={16} /> Meus ingressos
+          </button>
+          <button className="h-10 px-4 rounded-full text-sm font-medium text-white inline-flex items-center gap-2 bg-accent hover:bg-accent-hover transition-colors">
+            <User size={16} /> Entrar
+          </button>
+          <button className="h-10 w-10 rounded-full inline-flex items-center justify-center bg-surface hover:bg-surface/80 border border-border transition-colors">
+            <ShoppingCart size={16} className="text-primary" />
+          </button>
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        <div className="flex md:hidden items-center gap-2">
+          <button className="h-10 w-10 rounded-full inline-flex items-center justify-center bg-surface border border-border">
+            <Search size={16} className="text-primary" />
+          </button>
+          <button className="h-10 w-10 rounded-full inline-flex items-center justify-center bg-surface border border-border">
+            <Menu size={16} className="text-primary" />
+          </button>
+        </div>
       </div>
     </header>
   )
