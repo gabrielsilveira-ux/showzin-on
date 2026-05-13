@@ -45,10 +45,10 @@ export default function FilterBar({ count }: Props) {
       <div className="flex items-center gap-2 rounded-xl px-4 py-2.5 flex-1 min-w-[200px] bg-surface border border-border focus-within:border-accent/50 transition-colors">
         <Search size={16} className="text-muted shrink-0" />
         <input
-          defaultValue={params.get('q') ?? ''}
+          value={params.get('q') ?? ''}
+          onChange={e => update('q', e.target.value)}
           placeholder="Buscar eventos..."
           className="bg-transparent text-sm outline-none flex-1 w-full text-primary placeholder:text-muted/70"
-          onKeyDown={e => { if (e.key === 'Enter') update('q', (e.target as HTMLInputElement).value) }}
         />
       </div>
 
