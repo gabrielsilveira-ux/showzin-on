@@ -33,7 +33,7 @@ const EMPTY: EventFormData = {
   title: '', description: '', category: '', emoji: '', date_start: '', date_end: '',
   time_start: '', time_end: '', estado: 'SP', cidade: '', bairro: '', endereco: '',
   lat: '', lng: '', tags: [], is_free: true, ticket_url: '', image_url: '',
-  featured: false, status: 'draft',
+  stay22_map: '', featured: false, status: 'draft',
 }
 
 export default function EventForm({ initial = {}, eventId, mode }: Props) {
@@ -186,6 +186,10 @@ export default function EventForm({ initial = {}, eventId, mode }: Props) {
         </div>
 
         {/* ── TAGS ── */}
+        <Field label="Mapa Stay22 (Iframe)" hint="Cole aqui o código iframe do mapa Stay22">
+          <textarea value={form.stay22_map} onChange={e => set('stay22_map', e.target.value)} rows={3} placeholder='<iframe id="stay22-widget" src="..."></iframe>' className={`${inputCls()} resize-y leading-relaxed font-mono text-xs`} />
+        </Field>
+
         <SectionLabel>Tags</SectionLabel>
 
         <Field label="Tags" hint="Pressione Enter ou vírgula para adicionar. Máx. 8 tags.">

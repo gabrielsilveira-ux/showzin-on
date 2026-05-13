@@ -113,7 +113,7 @@ export async function getAllEventsAdmin(): Promise<Event[]> {
   noStore()
   const { data, error } = await supabase
     .from('events')
-    .select('id, slug, title, category, date_start, status, featured, source, cidade, estado, bairro, endereco, lat, lng, created_at')
+    .select('id, slug, title, category, date_start, status, featured, source, cidade, estado, bairro, endereco, lat, lng, created_at, stay22_map')
     .order('created_at', { ascending: false })
 
   if (error) { console.error('getAllEventsAdmin error:', error); return [] }
@@ -180,6 +180,7 @@ export async function createEvent(data: EventFormData): Promise<Event> {
     is_free:     data.is_free,
     ticket_url:  data.ticket_url || null,
     image_url:   data.image_url  || null,
+    stay22_map:  data.stay22_map || null,
     featured:    data.featured,
     status:      data.status,
     source:      'editorial',
@@ -214,6 +215,7 @@ export async function updateEvent(id: string, data: Partial<EventFormData>): Pro
     bairro: data.bairro || null,
     ticket_url: data.ticket_url || null,
     image_url: data.image_url || null,
+    stay22_map: data.stay22_map || null,
     updated_at: new Date().toISOString(),
   }
 

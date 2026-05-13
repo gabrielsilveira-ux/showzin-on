@@ -104,6 +104,17 @@ export default async function EventPage({ params }: Props) {
                   <MapPin size={15} /> Mais em {event.localizacao.cidade}
                 </Link>
               </div>
+
+              {/* Stay22 Map */}
+              {event.stay22_map && (
+                <div className="mt-12">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2" style={{ fontFamily: "'Playfair Display',serif" }}>
+                    <MapPin size={20} style={{ color: 'var(--accent)' }} />
+                    Hospedagem próxima ao evento
+                  </h3>
+                  <div className="rounded-xl overflow-hidden border w-full" style={{ borderColor: 'var(--border)' }} dangerouslySetInnerHTML={{ __html: event.stay22_map }} />
+                </div>
+              )}
             </div>
 
             {/* Sidebar info card */}
