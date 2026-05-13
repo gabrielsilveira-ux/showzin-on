@@ -2,24 +2,44 @@
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Search, User, Menu, X } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { usePathname } from 'next/navigation'
 
 export default function Header() {
   const router = useRouter()
+  const pathname = usePathname()
   const searchParams = useSearchParams()
   const [searchValue, setSearchValue] = useState(searchParams.get('q') ?? '')
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
 
-  // Sincroniza o valor do input com a URL (caso o usuário mude o filtro no FilterBar)
+  // Sincroniza o valor do input com a URL
   useEffect(() => {
     setSearchValue(searchParams.get('q') ?? '')
   }, [searchParams])
 
-  const handleSearch = (e?: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!e || e.key === 'Enter') {
-      const sp = new URLSearchParams(searchParams.toString())
-      if (searchValue) sp.set('q', searchValue); else sp.delete('q')
-      router.push(`/?${sp.toString()}`)
+  const updateSearch = useCallback((value: string) => {
+    const sp = new URLSearchParams(searchParams.toString())
+    if (value) sp.set('q', value); else sp.delete('q')
+    
+    // Se estiver na home, apenas atualiza os params. Se não, vai para a home.
+    const target = pathname === '/' ? `/?${sp.toString()}` : `/?${sp.toString()}`
+    // Na verdade, sempre levar para a home com os params é seguro
+    router.push(target, { scroll: false })
+  }, [pathname, searchParams, router])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value
+    setSearchValue(val)
+    
+    // Se estiver na home, busca em tempo real. Se não, espera o Enter.
+    if (pathname === '/') {
+      updateSearch(val)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      updateSearch(searchValue)
       setIsMobileSearchOpen(false)
     }
   }
@@ -36,9 +56,9 @@ export default function Header() {
           <Search size={16} className="text-muted" />
           <input 
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            onKeyDown={handleSearch}
-            placeholder="Buscar eventos, artistas, etc..." 
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            placeholder="Buscar eventos, gêneros..." 
             className="bg-transparent outline-none text-sm w-full placeholder:text-muted/70 text-primary" 
           />
         </div>
@@ -72,13 +92,19 @@ export default function Header() {
             <input 
               autoFocus
               value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              onKeyDown={handleSearch}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
               placeholder="Buscar eventos..." 
               className="bg-transparent outline-none text-base w-full placeholder:text-muted/70 text-primary" 
             />
             {searchValue && (
-              <button onClick={() => setSearchValue('')} className="p-1 text-muted">
+              <button 
+                onClick={() => {
+                  setSearchValue('')
+                  updateSearch('')
+                }} 
+                className="p-1 text-muted"
+              >
                 <X size={18} />
               </button>
             )}

@@ -98,7 +98,9 @@ export async function getEvents(filters?: Partial<EventFilters>): Promise<Event[
 
   if (filters?.city)   query = query.eq('cidade', filters.city)
   if (filters?.genre)  query = query.eq('category', filters.genre)
-  if (filters?.search) query = query.ilike('title', `%${filters.search}%`)
+  if (filters?.search) {
+    query = query.or(`title.ilike.%${filters.search}%,category.ilike.%${filters.search}%`)
+  }
 
   const { data, error } = await query
   if (error) { console.error('getEvents error:', error); return [] }
