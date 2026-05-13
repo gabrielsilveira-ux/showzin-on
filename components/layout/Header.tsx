@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { Search, User, Ticket, ShoppingCart, Menu } from 'lucide-react'
+import { Search, User, Menu } from 'lucide-react'
 
 export default function Header() {
   return (
@@ -18,14 +18,8 @@ export default function Header() {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-3">
-          <button className="h-10 px-4 rounded-full text-sm font-medium text-primary inline-flex items-center gap-2 bg-surface hover:bg-surface/80 border border-border transition-colors">
-            <Ticket size={16} /> Meus ingressos
-          </button>
           <button className="h-10 px-4 rounded-full text-sm font-medium text-white inline-flex items-center gap-2 bg-accent hover:bg-accent-hover transition-colors">
             <User size={16} /> Entrar
-          </button>
-          <button className="h-10 w-10 rounded-full inline-flex items-center justify-center bg-surface hover:bg-surface/80 border border-border transition-colors">
-            <ShoppingCart size={16} className="text-primary" />
           </button>
         </div>
 
