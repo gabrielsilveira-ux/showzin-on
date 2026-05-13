@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Search, User, Menu, X } from 'lucide-react'
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
 
 export default function Header() {
