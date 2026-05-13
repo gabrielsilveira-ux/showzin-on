@@ -3,7 +3,7 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useCallback } from 'react'
 import { CITIES, CATEGORY_CONFIG } from '@/lib/db'
 import { Category } from '@/types'
-import { Search, X, SlidersHorizontal } from 'lucide-react'
+import { X, SlidersHorizontal } from 'lucide-react'
 
 const PERIODS = [
   { value: '', label: 'Qualquer data' },
@@ -41,20 +41,7 @@ export default function FilterBar({ count }: Props) {
         </span>
       </div>
 
-      {/* Search */}
-      <div className="flex items-center gap-2 rounded-xl px-4 py-2.5 flex-1 min-w-[200px] bg-surface border border-border focus-within:border-accent/50 transition-colors">
-        <Search size={16} className="text-muted shrink-0" />
-        <input
-          value={params.get('q') ?? ''}
-          onChange={e => update('q', e.target.value)}
-          placeholder="Buscar eventos..."
-          className="bg-transparent text-sm outline-none flex-1 w-full text-primary placeholder:text-muted/70"
-        />
-      </div>
-
-      <div className="hidden md:block w-px h-8 bg-border/80 mx-2" />
-
-      {/* Filters Wrapper */}
+      {/* Filtros */}
       <div className="flex flex-col sm:flex-row gap-3 flex-1">
         <div className="relative flex-1">
           <select
