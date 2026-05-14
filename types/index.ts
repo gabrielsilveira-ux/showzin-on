@@ -43,6 +43,7 @@ export interface Event {
   is_free:     boolean
   ticket_url?: string          // link de inscrição/ingresso
   image_url?:  string
+  stay22_map?: string          // Iframe do mapa Stay22
   featured:    boolean
   status:      EventStatus
   source:      EventSource
@@ -85,6 +86,7 @@ export interface EventFormData {
   is_free:     boolean
   ticket_url:  string
   image_url:   string
+  stay22_map:  string
   featured:    boolean
   status:      EventStatus
 }

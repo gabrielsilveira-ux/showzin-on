@@ -9,15 +9,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cream:  '#F5F0E8',
-        ink:    '#1C1A16',
-        accent: '#E8430A',
+        background: '#0a0a0a',
+        surface:    '#171717',
+        border:     '#262626',
+        accent:     '#8b5cf6',
+        'accent-hover': '#7c3aed',
+        primary:    '#fafafa',
+        muted:      '#a3a3a3',
       },
       fontFamily: {
-        display: ["'Playfair Display'", 'serif'],
-        mono:    ["'DM Mono'",          'monospace'],
-        sans:    ["'DM Sans'",          'sans-serif'],
+        display: ['var(--font-space-grotesk)', 'sans-serif'],
+        sans:    ['var(--font-inter)', 'sans-serif'],
       },
+      animation: {
+        'fade-up': 'fadeUp 0.5s ease-out forwards',
+      },
+      keyframes: {
+        fadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        }
+      }
     },
   },
   plugins: [],

@@ -1,0 +1,3 @@
+module.exports=[80398,a=>{"use strict";var b=a.i(7997);a.s(["default",0,function(){return(0,b.jsx)("div",{className:"min-h-screen w-full flex items-center justify-center",style:{background:"#F0EDE5"},children:(0,b.jsx)("div",{className:"rounded-xl border px-5 py-3 text-sm animate-pulse",style:{background:"#fff",borderColor:"var(--border)",color:"var(--ink-muted)"},children:"Carregando painel administrativo..."})})}])},81625,a=>{a.n(a.i(80398))}];
+
+//# sourceMappingURL=app_admin_loading_tsx_0m73ei0._.js.map

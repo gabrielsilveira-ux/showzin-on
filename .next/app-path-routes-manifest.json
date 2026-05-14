@@ -1,0 +1,17 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin/configuracoes/page": "/admin/configuracoes",
+  "/admin/eventos/[id]/page": "/admin/eventos/[id]",
+  "/admin/eventos/novo/page": "/admin/eventos/novo",
+  "/admin/eventos/page": "/admin/eventos",
+  "/admin/login/page": "/admin/login",
+  "/admin/page": "/admin",
+  "/api/admin/events/[id]/route": "/api/admin/events/[id]",
+  "/api/admin/events/route": "/api/admin/events",
+  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
+  "/api/events/route": "/api/events",
+  "/eventos/[slug]/page": "/eventos/[slug]",
+  "/favicon.ico/route": "/favicon.ico",
+  "/page": "/"
+}

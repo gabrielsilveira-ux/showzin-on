@@ -1,0 +1,3 @@
+module.exports=[93500,a=>{"use strict";var b=a.i(7997);a.s(["default",0,function(){return(0,b.jsx)("div",{className:"p-8",children:(0,b.jsxs)("div",{className:"rounded-xl border p-6 animate-pulse",style:{background:"#fff",borderColor:"var(--border)"},children:[(0,b.jsx)("div",{className:"h-5 w-56 mb-4 rounded",style:{background:"var(--surface-2)"}}),(0,b.jsx)("div",{className:"space-y-3",children:Array.from({length:6}).map((a,c)=>(0,b.jsx)("div",{className:"h-10 rounded",style:{background:"var(--surface)"}},c))})]})})}])},27462,a=>{a.n(a.i(93500))}];
+
+//# sourceMappingURL=app_admin_eventos_loading_tsx_06yk8tq._.js.map

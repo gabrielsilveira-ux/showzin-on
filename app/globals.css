@@ -1,42 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --cream: #f5f5f7;
-  --ink: #111111;
-  --ink-soft: #2a2a34;
-  --ink-muted: #6f6d80;
-  --accent: #a347e8;
-  --accent-warm: #f4d700;
-  --accent-hover: #8e34d2;
-  --surface: #ffffff;
-  --surface-2: #f3eaff;
-  --border: rgba(66, 58, 90, 0.15);
-  --border-strong: rgba(66, 58, 90, 0.3);
+@theme {
+  --color-background: #0a0a0a;
+  --color-surface: #171717;
+  --color-border: #262626;
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #7c3aed;
+  --color-primary: #fafafa;
+  --color-muted: #a3a3a3;
+  --font-display: var(--font-space-grotesk), sans-serif;
+  --font-sans: var(--font-inter), sans-serif;
 }
 
-body {
-  font-family: 'Manrope', sans-serif;
-  background: #f5f5f7;
-  color: #1C1A16;
-  overflow-x: hidden;
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
 }
 
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 1000; opacity: 0.6;
+@layer utilities {
+  .glass {
+    background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+    backdrop-filter: blur(12px);
+    border: 1px solid color-mix(in srgb, white 10%, transparent);
+  }
+  
+  .glass-card {
+    background-color: color-mix(in srgb, white 2%, transparent);
+    backdrop-filter: blur(16px);
+    border: 1px solid color-mix(in srgb, white 5%, transparent);
+  }
 }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #EDEAE1; }
-::-webkit-scrollbar-thumb { background: rgba(28,26,22,0.25); border-radius: 3px; }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+::-webkit-scrollbar {
+  width: 8px;
 }
-.animate-fadeup { animation: fadeUp 0.35s ease both; }
+::-webkit-scrollbar-track {
+  background-color: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--color-muted) 50%, transparent);
+}

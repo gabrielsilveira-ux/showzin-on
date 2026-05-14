@@ -1,3 +1,4 @@
+import React, { Suspense } from 'react'
 import Link from 'next/link'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
@@ -5,7 +6,7 @@ import Footer from '@/components/layout/Footer'
 export default function NotFound() {
   return (
     <>
-      <Header />
+      <Suspense><Header /></Suspense>
       <main className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
         <div className="text-7xl mb-6">🔍</div>
         <h1 className="mb-3" style={{ fontFamily: "'Playfair Display',serif", fontWeight: 900, fontSize: '2.5rem' }}>
