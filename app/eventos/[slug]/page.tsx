@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
@@ -36,7 +37,7 @@ export default async function EventPage({ params }: Props) {
 
   return (
     <>
-      <Header />
+      <Suspense><Header /></Suspense>
       <main>
         {/* Breadcrumb */}
         <div className="max-w-4xl mx-auto px-4 sm:px-8 pt-6 pb-2">

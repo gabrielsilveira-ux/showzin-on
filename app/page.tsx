@@ -23,7 +23,7 @@ export default async function HomePage({ searchParams }: Props) {
 
   return (
     <>
-      <Header />
+      <Suspense><Header /></Suspense>
       <main className="min-h-screen bg-background pb-20">
         <section className="max-w-7xl mx-auto px-4 sm:px-8 py-8">
           {featuredEvent && (
