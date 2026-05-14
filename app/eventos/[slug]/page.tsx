@@ -46,15 +46,61 @@ export default async function EventPage({ params }: Props) {
           </Link>
         </div>
 
-        {/* Hero image / cover */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-8 mb-8">
-          <div className="rounded-2xl overflow-hidden relative" style={{ aspectRatio: '16/6', background: `linear-gradient(135deg, ${event.color}25, ${event.color}60)` }}>
-            <div className="absolute inset-0 flex items-center justify-center text-9xl">{event.emoji}</div>
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(28,26,22,0.5) 0%, transparent 60%)' }} />
-            {/* Category + Free badge */}
-            <div className="absolute top-4 left-4 flex gap-2">
-              <span className="px-3 py-1 rounded text-white text-xs font-medium" style={{ background: event.color, fontFamily: 'DM Mono,monospace', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{cat.label}</span>
-              <span className="px-3 py-1 rounded text-xs font-medium" style={{ background: 'rgba(28,26,22,0.75)', color: 'var(--accent-warm)', fontFamily: 'DM Mono,monospace', textTransform: 'uppercase', letterSpacing: '0.06em', backdropFilter: 'blur(4px)' }}>GRÁTIS</span>
+        {/* Hero Banner Novo */}
+        <div className="max-w-4xl mx-auto px-4 sm:px-8 mb-8 mt-4">
+          <div className="rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-2xl" style={{ background: '#1c1a17', border: '1px solid rgba(255,255,255,0.05)' }}>
+            
+            {/* Informações na Esquerda */}
+            <div className="p-8 md:p-10 md:w-[50%] flex flex-col justify-center">
+              <h1 className="mb-6 uppercase leading-tight tracking-tight" style={{ fontFamily: 'var(--font-space-grotesk), sans-serif', fontWeight: 900, fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', color: '#ffffff' }}>
+                {event.title}
+              </h1>
+              
+              <div className="space-y-4 mb-8 text-sm font-medium" style={{ fontFamily: 'var(--font-inter), sans-serif', color: '#a1a1aa' }}>
+                <div className="flex items-center gap-4">
+                  <Calendar size={18} style={{ color: '#d4d4d8' }} />
+                  <span className="uppercase tracking-wider">{formatFullDate(event.date_start)} {event.date_end ? `- ${formatFullDate(event.date_end)}` : ''}</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Clock size={18} style={{ color: '#d4d4d8' }} />
+                  <span className="uppercase tracking-wider">{event.time_start}{event.time_end ? ` - ${event.time_end}` : ''}</span>
+                </div>
+                <div className="flex items-center gap-4 uppercase tracking-wider">
+                  <MapPin size={18} style={{ color: '#d4d4d8' }} />
+                  <span>{event.localizacao.bairro ? `${event.localizacao.bairro} - ` : ''}{event.localizacao.cidade}</span>
+                </div>
+              </div>
+
+              <div className="mt-auto">
+                {event.is_free ? (
+                  <div className="inline-block py-3 px-6 rounded-xl text-sm font-bold text-center uppercase tracking-widest" style={{ background: '#dcfce7', color: '#166534' }}>
+                    Entrada Gratuita
+                  </div>
+                ) : (
+                  event.ticket_url ? (
+                    <a href={event.ticket_url} target="_blank" rel="noopener noreferrer"
+                      className="inline-block w-full sm:w-auto py-3.5 px-8 rounded-xl text-base font-black text-center uppercase transition-all hover:scale-105 active:scale-95"
+                      style={{ background: '#ff33ff', color: '#000000', letterSpacing: '0.05em', boxShadow: '0 0 20px rgba(255, 51, 255, 0.4)' }}>
+                      Comprar Ingresso
+                    </a>
+                  ) : null
+                )}
+              </div>
+            </div>
+
+            {/* Imagem na Direita */}
+            <div className="md:w-[50%] relative min-h-[280px] md:min-h-full bg-neutral-900">
+              {event.image_url ? (
+                <img src={event.image_url} alt={event.title} className="absolute inset-0 w-full h-full object-cover" />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-6" style={{ background: `linear-gradient(135deg, ${event.color}25, ${event.color}60)` }}>
+                  <div className="text-9xl mb-4 drop-shadow-lg">{event.emoji}</div>
+                </div>
+              )}
+              {/* Categoria Badge */}
+              <div className="absolute top-6 right-6">
+                <span className="px-4 py-1.5 rounded-full text-white text-xs font-bold shadow-lg" style={{ background: event.color, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{cat.label}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -65,10 +111,7 @@ export default async function EventPage({ params }: Props) {
 
             {/* Main */}
             <div className="md:col-span-2">
-              <h1 className="mb-4 leading-tight" style={{ fontFamily: "'Playfair Display',serif", fontWeight: 900, fontSize: 'clamp(1.8rem,4vw,2.6rem)' }}>
-                {event.title}
-              </h1>
-              <p className="text-base leading-relaxed mb-8" style={{ color: 'var(--ink-soft)', fontWeight: 300, lineHeight: 1.8 }}>
+              <p className="text-base leading-relaxed mb-8 mt-2" style={{ color: 'var(--ink-soft)', fontWeight: 300, lineHeight: 1.8 }}>
                 {event.description}
               </p>
 
@@ -88,13 +131,6 @@ export default async function EventPage({ params }: Props) {
 
               {/* CTA buttons */}
               <div className="flex gap-3 flex-wrap">
-                {event.ticket_url && (
-                  <a href={event.ticket_url} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-medium text-white transition-colors"
-                    style={{ background: 'var(--accent)' }}>
-                    <ExternalLink size={15} /> Inscrever-se / Ingressos
-                  </a>
-                )}
                 <button className="inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-medium transition-colors"
                   style={{ background: 'var(--surface)', border: '1px solid var(--border-strong)', color: 'var(--ink-soft)' }}>
                   <Share2 size={15} /> Compartilhar
@@ -135,10 +171,20 @@ export default async function EventPage({ params }: Props) {
                   <InfoRow icon={<span>🏙️</span>} label="Cidade">
                     <span className="font-medium">{event.localizacao.cidade}, {event.localizacao.estado}</span>
                   </InfoRow>
-                  {event.is_free && (
+                  {event.is_free ? (
                     <div className="pt-3 border-t" style={{ borderColor: 'var(--border)' }}>
                       <div className="text-xs text-center py-2 rounded font-medium" style={{ background: '#dcfce7', color: '#166534', fontFamily: 'DM Mono,monospace', textTransform: 'uppercase', letterSpacing: '0.06em' }}>✓ Entrada Gratuita</div>
                     </div>
+                  ) : (
+                    event.ticket_url && (
+                      <div className="pt-3 border-t" style={{ borderColor: 'var(--border)' }}>
+                        <a href={event.ticket_url} target="_blank" rel="noopener noreferrer"
+                          className="block w-full text-center py-3 rounded-lg text-sm font-black uppercase transition-transform hover:scale-105 active:scale-95"
+                          style={{ background: '#ff33ff', color: '#000000', letterSpacing: '0.05em', boxShadow: '0 4px 14px rgba(255, 51, 255, 0.2)' }}>
+                          Comprar Ingresso
+                        </a>
+                      </div>
+                    )
                   )}
                 </div>
 
