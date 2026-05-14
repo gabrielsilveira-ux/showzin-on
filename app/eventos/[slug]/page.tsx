@@ -72,18 +72,12 @@ export default async function EventPage({ params }: Props) {
               </div>
 
               <div className="mt-auto">
-                {event.is_free ? (
-                  <div className="inline-block py-3 px-6 rounded-xl text-sm font-bold text-center uppercase tracking-widest" style={{ background: '#dcfce7', color: '#166534' }}>
-                    Entrada Gratuita
-                  </div>
-                ) : (
-                  event.ticket_url ? (
-                    <a href={event.ticket_url} target="_blank" rel="noopener noreferrer"
-                      className="inline-block w-full sm:w-auto py-3.5 px-8 rounded-xl text-base font-black text-center uppercase transition-all hover:scale-105 active:scale-95"
-                      style={{ background: '#ff33ff', color: '#000000', letterSpacing: '0.05em', boxShadow: '0 0 20px rgba(255, 51, 255, 0.4)' }}>
-                      Comprar Ingresso
-                    </a>
-                  ) : null
+                {event.ticket_url && (
+                  <a href={event.ticket_url} target="_blank" rel="noopener noreferrer"
+                    className="inline-block w-full sm:w-auto py-3.5 px-8 rounded-xl text-base font-black text-center uppercase transition-all hover:scale-105 active:scale-95"
+                    style={{ background: '#ff33ff', color: '#000000', letterSpacing: '0.05em', boxShadow: '0 0 20px rgba(255, 51, 255, 0.4)' }}>
+                    Comprar Ingresso
+                  </a>
                 )}
               </div>
             </div>
@@ -171,20 +165,14 @@ export default async function EventPage({ params }: Props) {
                   <InfoRow icon={<span>🏙️</span>} label="Cidade">
                     <span className="font-medium">{event.localizacao.cidade}, {event.localizacao.estado}</span>
                   </InfoRow>
-                  {event.is_free ? (
+                  {event.ticket_url && (
                     <div className="pt-3 border-t" style={{ borderColor: 'var(--border)' }}>
-                      <div className="text-xs text-center py-2 rounded font-medium" style={{ background: '#dcfce7', color: '#166534', fontFamily: 'DM Mono,monospace', textTransform: 'uppercase', letterSpacing: '0.06em' }}>✓ Entrada Gratuita</div>
+                      <a href={event.ticket_url} target="_blank" rel="noopener noreferrer"
+                        className="block w-full text-center py-3 rounded-lg text-sm font-black uppercase transition-transform hover:scale-105 active:scale-95"
+                        style={{ background: '#ff33ff', color: '#000000', letterSpacing: '0.05em', boxShadow: '0 4px 14px rgba(255, 51, 255, 0.2)' }}>
+                        Comprar Ingresso
+                      </a>
                     </div>
-                  ) : (
-                    event.ticket_url && (
-                      <div className="pt-3 border-t" style={{ borderColor: 'var(--border)' }}>
-                        <a href={event.ticket_url} target="_blank" rel="noopener noreferrer"
-                          className="block w-full text-center py-3 rounded-lg text-sm font-black uppercase transition-transform hover:scale-105 active:scale-95"
-                          style={{ background: '#ff33ff', color: '#000000', letterSpacing: '0.05em', boxShadow: '0 4px 14px rgba(255, 51, 255, 0.2)' }}>
-                          Comprar Ingresso
-                        </a>
-                      </div>
-                    )
                   )}
                 </div>
 
