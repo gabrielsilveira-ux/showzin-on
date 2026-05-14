@@ -1,6 +1,8 @@
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
+import Image from 'next/image'
 import type { Metadata } from 'next'
 import { getEventBySlug, getEvents, CATEGORY_CONFIG } from '@/lib/db'
 import { formatEventDate, formatFullDate } from '@/lib/utils'
@@ -85,7 +87,7 @@ export default async function EventPage({ params }: Props) {
             {/* Imagem na Direita */}
             <div className="md:w-[50%] relative min-h-[280px] md:min-h-full bg-neutral-900">
               {event.image_url ? (
-                <img src={event.image_url} alt={event.title} className="absolute inset-0 w-full h-full object-cover" />
+                <Image src={event.image_url} alt={event.title} fill className="object-cover" priority />
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6" style={{ background: `linear-gradient(135deg, ${event.color}25, ${event.color}60)` }}>
                   <div className="text-9xl mb-4 drop-shadow-lg">{event.emoji}</div>

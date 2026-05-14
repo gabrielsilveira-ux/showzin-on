@@ -42,7 +42,41 @@ export default function EventForm({ initial = {}, eventId, mode }: Props) {
   const [tagInput, setTagInput] = useState('')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [uploadingImage, setUploadingImage] = useState(false)
   const [errors, setErrors] = useState<Partial<Record<keyof EventFormData, string>>>({})
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('A imagem deve ter no máximo 5MB')
+      return
+    }
+
+    setUploadingImage(true)
+    const formData = new FormData()
+    formData.append('file', file)
+
+    try {
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!res.ok) {
+        const error = await res.json()
+        throw new Error(error.error || 'Erro ao enviar imagem')
+      }
+
+      const data = await res.json()
+      set('image_url', data.url)
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Erro no upload')
+    } finally {
+      setUploadingImage(false)
+    }
+  }
 
   const set = (k: keyof EventFormData, v: unknown) => {
     setForm(prev => ({ ...prev, [k]: v }))
@@ -210,8 +244,32 @@ export default function EventForm({ initial = {}, eventId, mode }: Props) {
         {/* ── LINK E MÍDIA ── */}
         <SectionLabel>Link e mídia</SectionLabel>
 
-        <Field label="URL da imagem de capa" hint="Cole a URL de uma imagem (JPG, PNG, WebP). Proporção ideal: 16:9">
-          <input value={form.image_url} onChange={e => set('image_url', e.target.value)} placeholder="https://..." className={inputCls()} />
+        <Field label="Imagem de capa" hint="Faça upload de uma imagem (JPG, PNG, WebP). Proporção ideal: 16:9">
+          {form.image_url ? (
+            <div className="relative rounded-xl overflow-hidden border border-border h-40 group">
+              <img src={form.image_url} alt="Capa do evento" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                <button type="button" onClick={() => set('image_url', '')} className="px-4 py-2 bg-red-500 text-white text-sm font-bold rounded-lg shadow-lg">Remover imagem</button>
+              </div>
+            </div>
+          ) : (
+            <div className="relative">
+              <input type="file" accept="image/*" onChange={handleImageUpload} disabled={uploadingImage} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed" title="Clique ou arraste a imagem" />
+              <div className={`w-full h-40 rounded-xl border-2 border-dashed border-border flex flex-col items-center justify-center text-muted transition-colors ${uploadingImage ? 'bg-white/5 border-accent' : 'hover:border-accent hover:bg-white/5'}`}>
+                {uploadingImage ? (
+                  <div className="flex items-center gap-2 font-mono text-sm text-accent">
+                    <span className="animate-spin text-xl">⏳</span> Enviando...
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">📸</div>
+                    <div className="text-sm font-medium">Clique ou arraste uma imagem</div>
+                    <div className="text-xs mt-1 opacity-70">Máx. 5MB</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </Field>
 
         <Field label="Link de inscrição / ingressos" hint="Sympla, Eventbrite, site do evento, etc.">
