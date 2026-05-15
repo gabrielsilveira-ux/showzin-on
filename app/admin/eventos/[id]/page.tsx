@@ -35,6 +35,7 @@ export default async function EditEventPage({ params }: Props) {
     is_free:     ev.is_free,
     ticket_url:  ev.ticket_url ?? '',
     image_url:   ev.image_url ?? '',
+    stay22_map:  ev.stay22_map ?? '',
     featured:    ev.featured,
     status:      ev.status,
   }
